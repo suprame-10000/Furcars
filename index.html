@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="tr" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ek   ase Kablosu Projesi</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #000;
+    }
+    
+    .page-section {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+      padding: 80px 16px 60px;
+      box-sizing: border-box;
+    }
+    
+    @media (min-width: 768px) {
+      .page-section {
+        padding: 80px 20px 60px;
+      }
+    }
+    
+    /* Animated Background */
+    .animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0f 50%, #000000 100%);
+      z-index: -1;
+    }
+    
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      animation: gridMove 20s linear infinite;
+    }
+    
+    @keyframes gridMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50px); }
+    }
+    
+    /* Particles */
+    .particle {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: #d4af37;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 15s infinite;
+      z-index: 0;
+    }
+    
+    @keyframes particleFloat {
+      0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-100%) translateX(50px); }
+    }
+    
+    /* Glowing effects */
+    .glow-text {
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.5),
+                   0 0 40px rgba(212, 175, 55, 0.3),
+                   0 0 60px rgba(212, 175, 55, 0.2);
+    }
+    
+    .glow-border {
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3),
+                  inset 0 0 20px rgba(212, 175, 55, 0.05);
+    }
+    
+    /* Navigation */
+    .nav-glass {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .nav-link {
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 8px 16px;
+      overflow: hidden;
+    }
+    
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .nav-link:hover::before {
+      left: 100%;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #d4af37, #f4d03f);
+      transform: translateX(-50%);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 80%;
+    }
+    
+    /* Hero Section */
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s infinite;
+      background-size: 200% 100%;
+      line-height: 1.1; /* DÜZENLEME: Mobil görünüm için satır yüksekliği azaltıldı */
+      text-align: center;
+      padding: 0;
+      margin: 1rem 0 1rem 0; /* DÜZENLEME: Üst ve alt boşluklar azaltıldı */
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    @media (min-width: 480px) {
+      .hero-title {
+        font-size: 2.5rem;
+        line-height: 1.2;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 6rem;
+        line-height: 1.3;
+      }
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      color: #b0b0b0;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Content Cards */
+    .content-card {
+      background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .content-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+      transform: rotate(45deg);
+      transition: all 0.6s;
+    }
+    
+    .content-card:hover::before {
+      top: 100%;
+      left: 100%;
+    }
+    
+    .content-card:hover {
+      border-color: rgba(212, 175, 55, 0.6);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3),
+                  inset 0 0 30px rgba(212, 175, 55, 0.1);
+    }
+    
+    /* Section Headers */
+    .section-header {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 3rem;
+    }
+    
+    .section-header::before,
+    .section-header::after {
+      content: '';
+      position: absolute;
+      height: 3px;
+      width: 100px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      top: 50%;
+    }
+    
+    .section-header::before {
+      right: 110%;
+    }
+    
+    .section-header::after {
+      left: 110%;
+    }
+    
+    /* Video Container */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+      border: 2px solid rgba(212, 175, 55, 0.4);
+    }
+    
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Scroll Indicator */
+    .scroll-indicator {
+      animation: scrollBounce 2s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .scroll-indicator:hover {
+      transform: scale(1.2);
+    }
+    
+    @keyframes scrollBounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    /* Section number indicators */
+    .section-number {
+      display: none;
+    }
+    
+    @media (min-width: 768px) {
+      .section-number {
+        display: block;
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        font-size: 8rem;
+        font-weight: 900;
+        color: rgba(212, 175, 55, 0.05);
+        font-family: 'Orbitron', sans-serif;
+        z-index: 0;
+        line-height: 1;
+      }
+    }
+    
+    /* Footer */
+    .footer {
+      background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 15, 0.95) 50%);
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 3rem 0;
+      position: relative;
+    }
+    
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+    }
+
+    .feature-box {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      transition: all 0.3s;
+    }
+
+    .feature-box:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: rgba(212, 175, 55, 0.4);
+      transform: translateY(-5px);
+    }
+    
+    /* Image Slider */
+    .slider-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 2rem 0;
+      overflow: hidden;
+      position: relative;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      /* YENİ: Mobil görünümde taşmayı engellemek için padding eklendi */
+      padding-left: 16px; 
+      padding-right: 16px;
+      box-sizing: border-box;
+    }
+    
+    @media (min-width: 768px) {
+      .slider-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        border-radius: 20px;
+        /* Masaüstünde ekstra padding kaldırıldı */
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+    
+    .slider-track {
+      display: flex;
+      animation: slide 30s linear infinite;
+      width: fit-content;
+    }
+    
+    .slider-track:hover {
+      animation-play-state: paused;
+    }
+    
+    .slider-item {
+      flex-shrink: 0;
+      width: 200px;
+      height: 355px;
+      margin-right: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    
+    @media (min-width: 768px) {
+      .slider-item {
+        width: 300px;
+        height: 533px;
+        margin-right: 20px;
+        border-radius: 16px;
+      }
+    }
+    
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* WhatsApp Button */
+    .whatsapp-link {
+      transition: all 0.3s ease;
+    }
+
+    .whatsapp-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full"><div class="animated-bg"></div>
+  <div class="grid-overlay"></div><div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+  <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+  <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+  <div id="app" class="w-full h-full"><nav id="main-nav" class="nav-glass fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+     <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2 sm:space-x-4"><img src="Logo.jpg" alt="FurCars Logo" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; border: 2px solid rgba(212, 175, 55, 0.3);">
+       <div>
+        <div id="nav-title" class="text-base sm:text-xl font-bold glow-text" style="color: #d4af37; font-family: 'Orbitron', sans-serif;">
+         FURCARS
+        </div>
+        <div class="text-xs hidden sm:block" style="color: #b0b0b0; letter-spacing: 2px;">
+         CRUZE &amp; ASTRA J
+        </div>
+       </div>
+      </div>
+      <div class="hidden md:flex space-x-8"><a href="#what" class="nav-link text-sm font-semibold" style="color: #e0e0e0;">NEDİR?</a> <a href="#why" class="nav-link text-sm font-semibold" style="color: #e0e0e0;">NEDEN GEREKLİ?</a> <a href="#how" class="nav-link text-sm font-semibold" style="color: #e0e0e0;">MONTAJI NASIL?</a> <a href="#testimonials" class="nav-link text-sm font-semibold" style="color: #e0e0e0;">DENEYİMLER</a>
+      </div><button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);">
+       <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H21M3 6H21M3 18H21" stroke="#d4af37" stroke-width="2" stroke-linecap="round" />
+       </svg></button>
+     </div><div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 space-y-2"><a href="#what" class="block py-2 px-4 rounded-lg text-sm font-semibold mobile-nav-link" style="color: #e0e0e0; background: rgba(212, 175, 55, 0.05);">NEDİR?</a> <a href="#why" class="block py-2 px-4 rounded-lg text-sm font-semibold mobile-nav-link" style="color: #e0e0e0; background: rgba(212, 175, 55, 0.05);">NEDEN GEREKLİ?</a> <a href="#how" class="block py-2 px-4 rounded-lg text-sm font-semibold mobile-nav-link" style="color: #e0e0e0; background: rgba(212, 175, 55, 0.05);">NASIL TAKILIR?</a> <a href="#testimonials" class="block py-2 px-4 rounded-lg text-sm font-semibold mobile-nav-link" style="color: #e0e0e0; background: rgba(212, 175, 55, 0.05);">DENEYİMLER</a>
+     </div>
+    </div>
+   </nav><section class="page-section items-center justify-center text-center">
+    <div class="w-full max-w-6xl mx-auto px-0">
+     <h1 id="hero-title" class="hero-title mb-6">EK ŞASE KABLOSU</h1><div class="slider-container">
+      <div class="slider-track" id="slider-track">
+       <div class="slider-item">
+        <img src="1b.jpg" alt="Ek Şase Kablosu 1">
+       </div>
+       <div class="slider-item">
+        <img src="2b.jpg" alt="Ek Şase Kablosu 2">
+       </div>
+       <div class="slider-item">
+        <img src="3b.jpg" alt="Ek Şase Kablosu 3">
+       </div>
+       <div class="slider-item">
+        <img src="4b.jpg" alt="Ek Şase Kablosu 4">
+       </div>
+       <div class="slider-item">
+        <img src="1b.jpg" alt="Ek Şase Kablosu 1">
+       </div>
+       <div class="slider-item">
+        <img src="2b.jpg" alt="Ek Şase Kablosu 2">
+       </div>
+       <div class="slider-item">
+        <img src="3b.jpg" alt="Ek Şase Kablosu 3">
+       </div>
+       <div class="slider-item">
+        <img src="4b.jpg" alt="Ek Şase Kablosu 4">
+       </div>
+      </div>
+     </div>
+     <div class="scroll-indicator mt-8">
+      <svg width="40" height="70" viewbox="0 0 40 70" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="36" height="66" rx="18" stroke="#d4af37" stroke-width="3" /> <circle cx="20" cy="20" r="6" fill="#d4af37">
+        <animate attributename="cy" values="20;45;20" dur="2s" repeatcount="indefinite" />
+        <animate attributename="opacity" values="1;0.3;1" dur="2s" repeatcount="indefinite" />
+       </circle>
+      </svg>
+     </div>
+    </div>
+   </section><section id="what" class="page-section items-center justify-center" style="position: relative;">
+    <div class="section-number">
+     01
+    </div>
+    <div class="max-w-5xl mx-auto w-full" style="position: relative; z-index: 1;">
+     <div class="text-center mb-12 px-4">
+      <h2 id="what-title" class="section-header text-3xl sm:text-4xl md:text-6xl font-bold glow-text" style="color: #d4af37; font-family: 'Orbitron', sans-serif;">EK ŞASE KABLOSU NEDİR?</h2>
+     </div>
+     <div class="content-card rounded-3xl p-6 sm:p-8 md:p-12 glow-border">
+      <p id="what-description" class="text-base sm:text-lg md:text-2xl leading-relaxed text-center mb-10" style="color: #e0e0e0;">Chevrolet Cruze ve Opel Astra J araçlarda elektrik sisteminin güvenilirliğini artıran ve şase bağlantısını güçlendiren önemli bir modifikasyondur. Bu kablo, aracın topraklama sistemini optimize ederek elektriksel sorunları minimize eder.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-12">
+       <div class="feature-box">
+        <div class="text-4xl sm:text-5xl mb-3">
+         ⚡
+        </div>
+        <div class="text-base sm:text-lg font-bold" style="color: #d4af37;">
+         Elektrik Sistemi
+        </div>
+        <div class="text-xs sm:text-sm mt-2" style="color: #b0b0b0;">
+         Güçlü Topraklama
+        </div>
+       </div>
+       <div class="feature-box">
+        <div class="text-4xl sm:text-5xl mb-3">
+         🔧
+        </div>
+        <div class="text-base sm:text-lg font-bold" style="color: #d4af37;">
+         Kolay Montaj
+        </div>
+        <div class="text-xs sm:text-sm mt-2" style="color: #b0b0b0;">
+         Pratik Kurulum
+        </div>
+       </div>
+       <div class="feature-box">
+        <div class="text-4xl sm:text-5xl mb-3">
+         ✅
+        </div>
+        <div class="text-base sm:text-lg font-bold" style="color: #d4af37;">
+         Kalite
+        </div>
+        <div class="text-xs sm:text-sm mt-2" style="color: #b0b0b0;">
+         Uzun Ömürlü
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><section id="why" class="page-section items-center justify-center" style="position: relative;">
+    <div class="section-number">
+     02
+    </div>
+    <div class="max-w-5xl mx-auto w-full" style="position: relative; z-index: 1;">
+     <div class="text-center mb-12 px-4">
+      <h2 id="why-title" class="section-header text-3xl sm:text-4xl md:text-6xl font-bold glow-text" style="color: #d4af37; font-family: 'Orbitron', sans-serif;">NEDEN GEREKLİ?</h2>
+     </div>
+     <div class="content-card rounded-3xl p-6 sm:p-8 md:p-12 glow-border mb-8">
+      <p id="why-description" class="text-base sm:text-lg md:text-2xl leading-relaxed mb-10" style="color: #e0e0e0;">Araçlardaki elektriksel problemlerin büyük bir kısmı zayıf topraklama bağlantılarından kaynaklanır. Ek şase kablosu, bu bağlantıyı güçlendirerek aracın elektronik sistemlerinin daha stabil çalışmasını sağlar ve olası arıza risklerini azaltır. Özellikle otomatik vitesli araçlarda görülen vuruntu, gecikme ve düzensiz tepkiler gibi sorunların önüne geçilmesine yardımcı olur. Aynı zamanda konsol, aydınlatma ve diğer elektronik aksamların daha sağlıklı çalışmasını destekler.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-10">
+       <div class="flex items-start space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-xl" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2);"><span class="text-xl sm:text-2xl mt-1">⚡</span>
+        <p class="text-sm sm:text-base md:text-lg" style="color: #e0e0e0;">Elektrik sisteminde stabilite sağlar</p>
+       </div>
+       <div class="flex items-start space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-xl" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2);"><span class="text-xl sm:text-2xl mt-1">🔧</span>
+        <p class="text-sm sm:text-base md:text-lg" style="color: #e0e0e0;">Zayıf topraklama kaynaklı arızaları azaltır.</p>
+       </div>
+       <div class="flex items-start space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-xl" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2);"><span class="text-xl sm:text-2xl mt-1">⚙️</span>
+        <p class="text-sm sm:text-base md:text-lg" style="color: #e0e0e0;">Otomatik vites geçişlerinde daha düzgün çalışma sunar.</p>
+       </div>
+       <div class="flex items-start space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-xl" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2);"><span class="text-xl sm:text-2xl mt-1">✅</span>
+        <p class="text-sm sm:text-base md:text-lg" style="color: #e0e0e0;">Konsol ve elektronik donanımlarda yaşanan sorunları minimize eder.</p>
+       </div>
+      </div>
+      <div class="content-card rounded-2xl p-4 sm:p-6 glow-border">
+       <div class="mb-4 sm:mb-6 text-center">
+        <p class="font-bold text-lg sm:text-xl md:text-2xl mb-3" style="color: #d4af37;">📋 Teknik Bülten</p>
+        <p class="text-base sm:text-lg md:text-xl" style="color: #e0e0e0;">Bu konuda GM araçları için özel bir servis bülteni yayınlanmıştır.</p>
+       </div>
+       <div class="max-w-full mx-auto"><img src="bulletin.png" alt="Teknik Bülten" class="w-full max-w-full h-auto rounded-xl" style="border: 2px solid rgba(212, 175, 55, 0.3); object-fit: contain;">
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><section id="how" class="page-section items-center justify-center" style="position: relative;">
+    <div class="section-number">
+     03
+    </div>
+    <div class="max-w-6xl mx-auto w-full" style="position: relative; z-index: 1;">
+     <div class="text-center mb-12 px-4">
+      <h2 id="how-title" class="section-header text-3xl sm:text-4xl md:text-6xl font-bold glow-text" style="color: #d4af37; font-family: 'Orbitron', sans-serif;">NASIL TAKILIR?</h2>
+     </div>
+     <div class="content-card rounded-3xl p-6 sm:p-8 md:p-12 glow-border mb-10">
+      <p id="how-description" class="text-base sm:text-lg md:text-2xl leading-relaxed mb-8 sm:mb-12" style="color: #e0e0e0;">Montaj işlemi oldukça basittir. Video ve görsel içeriklerimizle adım adım takip ederek kendiniz kurabilirsiniz. Gerekli araçlar ve detaylı montaj talimatları aşağıdadır.</p><div class="mb-8 sm:mb-12">
+       <h3 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 flex items-center justify-center" style="color: #d4af37;"><span class="text-3xl sm:text-4xl md:text-5xl mr-3 sm:mr-4">📹</span> MONTAJ VİDEOSU</h3>
+       <div class="video-container"><iframe src="https://www.youtube.com/embed/t0y-yz_7biY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><section id="testimonials" class="page-section items-center justify-center" style="position: relative;">
+    <div class="section-number">
+     04
+    </div>
+    <div class="max-w-6xl mx-auto w-full" style="position: relative; z-index: 1;">
+     <div class="text-center mb-12 px-4">
+      <h2 id="testimonials-title" class="section-header text-3xl sm:text-4xl md:text-6xl font-bold glow-text mb-4" style="color: #d4af37; font-family: 'Orbitron', sans-serif;">KULLANICI DENEYİMLERİ</h2>
+      <p id="testimonials-subtitle" class="text-lg sm:text-xl md:text-2xl" style="color: #b0b0b0; letter-spacing: 2px;">Montaj Sonrası Olumlu Geri Bildirimler</p>
+     </div><div class="slider-container">
+      <div class="slider-track">
+       <div class="slider-item">
+        <img src="1.jpg" alt="Kullanıcı Deneyimi 1">
+       </div>
+       <div class="slider-item">
+        <img src="2.jpg" alt="Kullanıcı Deneyimi 2">
+       </div>
+       <div class="slider-item">
+        <img src="3.jpg" alt="Kullanıcı Deneyimi 3">
+       </div>
+       <div class="slider-item">
+        <img src="4.jpg" alt="Kullanıcı Deneyimi 4">
+       </div>
+       <div class="slider-item">
+        <img src="5.jpg" alt="Kullanıcı Deneyimi 5">
+       </div>
+       <div class="slider-item">
+        <img src="6.jpg" alt="Kullanıcı Deneyimi 6">
+       </div>
+       <div class="slider-item">
+        <img src="7.jpg" alt="Kullanıcı Deneyimi 7">
+       </div>
+       <div class="slider-item">
+        <img src="8.jpg" alt="Kullanıcı Deneyimi 8">
+       </div>
+       <div class="slider-item">
+        <img src="9.jpg" alt="Kullanıcı Deneyimi 9">
+       </div>
+       <div class="slider-item">
+        <img src="10.jpg" alt="Kullanıcı Deneyimi 10">
+       </div>
+       <div class="slider-item">
+        <img src="11.jpg" alt="Kullanıc   Deneyimi 11">
+       </div>
+       <div class="slider-item">
+        <img src="12.jpg" alt="Kullanıcı Deneyimi 12">
+       </div>
+       <div class="slider-item">
+        <img src="1.jpg" alt="Kullanıcı Deneyimi 1">
+       </div>
+       <div class="slider-item">
+        <img src="2.jpg" alt="Kullanıcı Deneyimi 2">
+       </div>
+       <div class="slider-item">
+        <img src="3.jpg" alt="Kullanıcı Deneyimi 3">
+       </div>
+       <div class="slider-item">
+        <img src="4.jpg" alt="Kullanıcı Deneyimi 4">
+       </div>
+       <div class="slider-item">
+        <img src="5.jpg" alt="Kullanıcı Deneyimi 5">
+       </div>
+       <div class="slider-item">
+        <img src="6.jpg" alt="Kullanıcı Deneyimi 6">
+       </div>
+       <div class="slider-item">
+        <img src="7.jpg" alt="Kullanıcı Deneyimi 7">
+       </div>
+       <div class="slider-item">
+        <img src="8.jpg" alt="Kullanıcı Deneyimi 8">
+       </div>
+       <div class="slider-item">
+        <img src="9.jpg" alt="Kullanıcı Deneyimi 9">
+       </div>
+       <div class="slider-item">
+        <img src="10.jpg" alt="Kullanıcı Deneyimi 10">
+       </div>
+       <div class="slider-item">
+        <img src="11.jpg" alt="Kullanıcı Deneyimi 11">
+       </div>
+       <div class="slider-item">
+        <img src="12.jpg" alt="Kullanıcı Deneyimi 12">
+       </div>
+      </div>
+     </div><div class="text-center mt-12"><a href="https://chat.whatsapp.com/JcmXXY0a8nrEZg2rw6wIUa?mode=wwt" target="_blank" rel="noopener noreferrer" class="whatsapp-link inline-flex items-center space-x-2 sm:space-x-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full" style="background: rgba(37, 211, 102, 0.1); border: 2px solid rgba(37, 211, 102, 0.3); text-decoration: none;">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="sm:w-6 sm:h-6"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="#25D366" />
+       </svg><span style="color: #25D366; font-weight: 600; font-size: 0.8rem;" class="sm:text-base">WhatsApp Grubuna Katıl</span> </a>
+     </div>
+    </div>
+   </section><footer class="footer text-center">
+    <div class="max-w-7xl mx-auto px-6">
+     <div class="mb-6"><img src="Logo.jpg" alt="FurCars Logo" class="mx-auto" style="width: 80px; height: 80px; object-fit: contain; border-radius: 12px; border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);">
+     </div>
+     <p class="text-lg mb-2" style="color: #d4af37; font-weight: 600; letter-spacing: 1px;">FURCARS - EK ŞASE KABLOSU PROJESİ</p>
+     <p class="text-base" style="color: #b0b0b0;">FURCARS</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    const defaultConfig = {
+      site_title: "Ek Şase Kablosu Projesi",
+      site_tagline: "Chevrolet Cruze Teknik Rehber",
+      background_color: "#0a0a0f",
+      surface_color: "#1a1a2e",
+      text_color: "#e0e0e0",
+      primary_action_color: "#d4af37",
+      secondary_action_color: "#dc2626",
+      font_family: "Rajdhani",
+      font_size: 16,
+      what_title: "Ek Şase Kablosu Nedir?",
+      what_description: "Chevrolet Cruze ve Opel Astra J araçlarda elektrik sisteminin güvenilirliğini artıran ve şase bağlantısını güçlendiren önemli bir modifikasyondur. Bu kablo, aracın topraklama sistemini optimize ederek elektriksel sorunları minimize eder.",
+      why_title: "Neden Gerekli?",
+      why_description: "Araçlardaki elektriksel problemlerin büyük bir kısmı zayıf topraklama bağlantılarından kaynaklanır. Ek şase kablosu, bu bağlantıyı güçlendirerek aracın elektronik sistemlerinin daha stabil çalışmasını sağlar ve olası arıza risklerini azaltır. Özellikle otomatik vitesli araçlarda görülen vuruntu, gecikme ve düzensiz tepkiler gibi sorunların önüne geçilmesine yardımcı olur. Aynı zamanda konsol, aydınlatma ve diğer elektronik aksamların daha sağlıklı çalışmasını destekler.",
+      how_title: "Nasıl Takılır?",
+      how_description: "Montaj işlemi oldukça basittir. Video ve görsel içeriklerimizle adım adım takip ederek kendiniz kurabilirsiniz. Gerekli araçlar ve detaylı montaj talimatları aşağıdadır.",
+      testimonials_title: "Kullanıcı Deneyimleri",
+      testimonials_subtitle: "Montaj Sonrası Paylaşımlar"
+    };
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+      // Apply fonts
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      
+      // Apply colors to main elements
+      document.querySelectorAll('.glow-text').forEach(el => {
+        el.style.color = primaryColor;
+      });
+      
+      document.querySelectorAll('p').forEach(p => {
+        if (!p.closest('.glow-text') && !p.id.includes('size')) {
+          p.style.color = textColor;
+        }
+      });
+      
+      // Update text content
+      document.getElementById('hero-title').textContent = (config.site_title || defaultConfig.site_title).toLocaleUpperCase('tr-TR');
+      
+      document.getElementById('what-title').textContent = (config.what_title || defaultConfig.what_title).toLocaleUpperCase('tr-TR');
+      document.getElementById('what-description').textContent = config.what_description || defaultConfig.what_description;
+      
+      document.getElementById('why-title').textContent = (config.why_title || defaultConfig.why_title).toLocaleUpperCase('tr-TR');
+      document.getElementById('why-description').textContent = config.why_description || defaultConfig.why_description;
+      
+      document.getElementById('how-title').textContent = (config.how_title || defaultConfig.how_title).toLocaleUpperCase('tr-TR');
+      document.getElementById('how-description').textContent = config.how_description || defaultConfig.how_description;
+      
+      document.getElementById('testimonials-title').textContent = (config.testimonials_title || defaultConfig.testimonials_title).toLocaleUpperCase('tr-TR');
+      document.getElementById('testimonials-subtitle').textContent = config.testimonials_subtitle || defaultConfig.testimonials_subtitle;
+    }
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => link.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Close mobile menu after clicking
+          if (mobileMenu) {
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+
+    // Active nav on scroll
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section[id]');
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (window.scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Initialize SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["site_title", config.site_title || defaultConfig.site_title],
+          ["site_tagline", config.site_tagline || defaultConfig.site_tagline],
+          ["what_title", config.what_title || defaultConfig.what_title],
+          ["what_description", config.what_description || defaultConfig.what_description],
+          ["why_title", config.why_title || defaultConfig.why_title],
+          ["why_description", config.why_description || defaultConfig.why_description],
+          ["how_title", config.how_title || defaultConfig.how_title],
+          ["how_description", config.how_description || defaultConfig.how_description],
+          ["testimonials_title", config.testimonials_title || defaultConfig.testimonials_title],
+          ["testimonials_subtitle", config.testimonials_subtitle || defaultConfig.testimonials_subtitle]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9adece5586b568aa',t:'MTc2NTcyNjg5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
